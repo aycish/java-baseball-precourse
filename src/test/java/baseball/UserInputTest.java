@@ -9,6 +9,9 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 
 class UserInputTest {
 
@@ -22,8 +25,9 @@ class UserInputTest {
 		Assertions.assertThat(numbers.size()).isEqualTo(3);
 	}
 
-	@Test
+	@ParameterizedTest
 	@DisplayName("사용자가 잘못된 문자를 입력하는 테스트")
+	@ValueSource(strings = {"abc", "ab-", "b12", "db2"})
 	void getWrongInput() {
 		input("abc");
 		UserInput.getUserInput();
@@ -42,29 +46,25 @@ class UserInputTest {
 		Assertions.assertThat(numbers.size()).isEqualTo(0);
 	}
 
-	@Test
+	@ParameterizedTest
 	@DisplayName("사용자가 0이 포함된 숫자를 입력하는 테스트")
-	void getZeroInput() {
-		input("120");
+	@ValueSource(strings = {"120", "102", "012", "001", "010", "100", "000"})
+	void getZeroInput(String userInput) {
+		input(userInput);
 		UserInput.getUserInput();
 
 		ArrayList<Integer> numbers = UserInput.getUserNumberList();
 		Assertions.assertThat(numbers.size()).isEqualTo(0);
 	}
 
-	@Test
+	@ParameterizedTest
 	@DisplayName("사용자가 3자리가 아닌 숫자를 입력하는 테스트")
-	void getShortAndLongInput() {
-		input("12345");
+	@ValueSource(strings = {"12345", "12"})
+	void getShortAndLongInput(String userInput) {
+		input(userInput);
 		UserInput.getUserInput();
 
 		ArrayList<Integer> numbers = UserInput.getUserNumberList();
-		Assertions.assertThat(numbers.size()).isEqualTo(0);
-
-		input("12");
-		UserInput.getUserInput();
-
-		numbers = UserInput.getUserNumberList();
 		Assertions.assertThat(numbers.size()).isEqualTo(0);
 	}
 
