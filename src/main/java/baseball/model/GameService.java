@@ -3,8 +3,6 @@ package baseball.model;
 import baseball.view.GameViewer;
 import baseball.dto.GameData;
 
-import java.util.NoSuchElementException;
-
 public class GameService {
 
     public static void generateComputerNumbers(GameData gameData) {
@@ -15,6 +13,7 @@ public class GameService {
         UserInputValidator.createUserNumberList(gameData);
         if (gameData.getMessage().contains("ERROR")) {
             GameViewer.printWrongInputNotice(gameData.getMessage());
+            gameData.setMessage("");
             return false;
         }
         return true;
@@ -24,6 +23,7 @@ public class GameService {
         UserInputValidator.createRestartFlag(gameData);
         if (gameData.getMessage().contains("ERROR")) {
             GameViewer.printWrongInputNotice(gameData.getMessage());
+            gameData.setMessage("");
             return false;
         }
         return true;

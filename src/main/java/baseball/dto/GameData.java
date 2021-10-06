@@ -11,7 +11,6 @@ public class GameData {
     private String userInput;
     private String Message;
 
-
     public GameData() {}
 
     public void initGameData() {

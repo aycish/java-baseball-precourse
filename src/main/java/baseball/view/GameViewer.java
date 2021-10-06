@@ -2,11 +2,8 @@ package baseball.view;
 
 import nextstep.utils.Console;
 
-import java.util.NoSuchElementException;
-
 public class GameViewer {
 	private static final String INPUT_NOTICE = "숫자를 입력해주세요 : ";
-	private static final String WRONG_INPUT_NOTICE = "[ERROR] 잘못된 입력입니다. 다시 입력해주세요.";
 	private static final String RESTART_NOTICE = "게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.";
 	private static final String NOTHING = "낫싱";
 	private static final String BALL_COUNT = "%d볼";
@@ -41,6 +38,7 @@ public class GameViewer {
 		printStrikeCount(strikeCount, ballCount);
 		printBallCount(ballCount);
 		printNothing(strikeCount, ballCount);
+
 		System.out.format(LINE_END);
 	}
 
@@ -62,8 +60,6 @@ public class GameViewer {
 	private static void printNothing(int strikeCount, int ballCount) {
 		if (strikeCount == 0 && ballCount == 0) {
 			System.out.format(NOTHING);
-			throw new NoSuchElementException(NOTHING);
 		}
 	}
-
 }

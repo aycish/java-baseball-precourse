@@ -1,9 +1,9 @@
 package baseball.model;
 
-import baseball.dto.GameData;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import baseball.dto.GameData;
 
 public class UserInputValidator {
 
@@ -23,7 +23,6 @@ public class UserInputValidator {
 			makeRestartToInt(gameData);
 		} catch(IllegalArgumentException e) {
 			gameData.setMessage(e.getMessage());
-			throw e;
 		}
 	}
 
@@ -40,7 +39,6 @@ public class UserInputValidator {
 			makeUserNumberToList(gameData);
 		} catch(IllegalArgumentException e) {
 			gameData.setMessage(e.getMessage());
-			throw e;
 		}
 	}
 
@@ -56,6 +54,7 @@ public class UserInputValidator {
 		for (char c : userInput.toCharArray()) {
 			numbers.add(c);
 		}
+
 		if (numbers.size() != NUMBER_LENGTH) {
 			throw new IllegalArgumentException("[ERROR] 중복되지 않은 숫자만 입력할 수 있습니다.");
 		}

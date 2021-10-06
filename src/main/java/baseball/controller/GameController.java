@@ -1,14 +1,11 @@
 package baseball.controller;
 
-import java.util.ArrayList;
-
 import baseball.view.GameViewer;
 import baseball.dto.GameData;
 import baseball.model.GameService;
 
 public class GameController {
     private GameData gameData = new GameData();
-    private ArrayList<Integer> computerNumber = new ArrayList<>();
     private final int ANSWER = 3;
     private final int START = 1;
     private final int FINISHED = 2;
@@ -28,7 +25,6 @@ public class GameController {
         if (gameStatus == START) {
             gameData.initGameData();
             GameService.generateComputerNumbers(gameData);
-            computerNumber = gameData.getComputerNumberList();
             gameStatus = RUNNING;
         }
     }
@@ -50,7 +46,6 @@ public class GameController {
     }
 
     private void gradeUserInput() {
-        gameData.setComputerNumberList(computerNumber);
         GameService.gradeUserInput(gameData);
         GameViewer.printScore(gameData.getStrikeCount(),gameData.getBallCount());
         if (gameData.getStrikeCount() == ANSWER) {
