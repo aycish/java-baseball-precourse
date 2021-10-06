@@ -3,8 +3,8 @@ package baseball.dto;
 import java.util.ArrayList;
 
 public class GameData {
-    private ArrayList<Integer> computerNumberList = new ArrayList<>();;
-    private ArrayList<Integer> userNumberList= new ArrayList<>();;
+    private ArrayList<Integer> computerNumberList = new ArrayList<>();
+    private ArrayList<Integer> userNumberList= new ArrayList<>();
     private int ballCount;
     private int strikeCount;
     private int restartFlag;
@@ -13,6 +13,9 @@ public class GameData {
 
     public GameData() {}
 
+    /**
+    * 사용할 데이터를 초기화한다.
+    */
     public void initGameData() {
         this.computerNumberList.clear();
         this.userNumberList.clear();
