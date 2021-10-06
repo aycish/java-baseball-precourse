@@ -40,6 +40,7 @@ public class UserInputValidator {
 			makeUserNumberToList(gameData);
 		} catch(IllegalArgumentException e) {
 			gameData.setMessage(e.getMessage());
+			throw e;
 		}
 	}
 
