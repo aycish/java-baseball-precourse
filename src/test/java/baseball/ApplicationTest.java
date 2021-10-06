@@ -17,6 +17,16 @@ public class ApplicationTest extends NSTest {
     }
 
     @Test
+    void 숫자_입력_에러() {
+        try (final MockedStatic<Randoms> mockRandoms = mockStatic(Randoms.class)) {
+            mockRandoms.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
+                    .thenReturn(1, 3, 5);
+            running("abc", "11", "13-", "01");
+            verify("[ERROR]");
+        }
+    }
+
+    @Test
     void 낫싱() {
         try (final MockedStatic<Randoms> mockRandoms = mockStatic(Randoms.class)) {
             mockRandoms.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
@@ -54,6 +64,26 @@ public class ApplicationTest extends NSTest {
                     .thenReturn(5, 8, 9);
             run("713", "1", "597", "589", "2");
             verify("3스트라이크", "게임 끝", "1스트라이크 1볼");
+        }
+    }
+
+    @Test
+    void 게임종료_후_재시작_오류입력() {
+        try (final MockedStatic<Randoms> mockRandoms = mockStatic(Randoms.class)) {
+            mockRandoms.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
+                    .thenReturn(7, 1, 3);
+            run("713", "ab", "597", "589", "2");
+            verify("ERROR");
+        }
+    }
+
+    @Test
+    void 게임종료_후_종료_정상_입력() {
+        try (final MockedStatic<Randoms> mockRandoms = mockStatic(Randoms.class)) {
+            mockRandoms.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
+                    .thenReturn(7, 1, 3);
+            run("713", "2");
+            verify("게임 끝");
         }
     }
 
