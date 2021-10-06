@@ -16,7 +16,7 @@ import nextstep.utils.Console;
 class UserInputValidatorTest {
 
 	boolean returnValue;
-
+	int restartFlag;
 	@Test
 	@DisplayName("사용자가 정상적인 숫자를 입력하는 테스트")
 	void getNormalNumber() {
@@ -31,6 +31,27 @@ class UserInputValidatorTest {
 	void getWrongInput(String userInput) {
 		input(userInput);
 		returnValue = UserInputValidator.saveUserNumberList(Console.readLine());
+		assertThat(returnValue).isFalse();
+	}
+
+	@ParameterizedTest
+	@DisplayName("재시작, 종료 정상 입력 테스트")
+	@ValueSource(strings = {"1", "2"})
+	void getNormalRestart(String userInput) {
+		input(userInput);
+		returnValue = UserInputValidator.saveRestartFlagFromUser(Console.readLine());
+		assertThat(returnValue).isTrue();
+
+		restartFlag = UserInputValidator.getRestartFlag();
+		assertThat(restartFlag).isEqualTo(Integer.parseInt(userInput));
+	}
+
+	@ParameterizedTest
+	@DisplayName("재시작, 종료 잘못된 문자를 입력하는 테스트")
+	@ValueSource(strings = {"a", "ab", "3", "123", "11"})
+	void getAbnormalRestart(String userInput) {
+		input(userInput);
+		returnValue = UserInputValidator.saveRestartFlagFromUser(Console.readLine());
 		assertThat(returnValue).isFalse();
 	}
 
