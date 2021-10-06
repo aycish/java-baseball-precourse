@@ -1,6 +1,8 @@
-package baseball;
+package baseball.view;
 
 import nextstep.utils.Console;
+
+import java.util.NoSuchElementException;
 
 public class GameViewer {
 	private static final String INPUT_NOTICE = "숫자를 입력해주세요 : ";
@@ -9,7 +11,7 @@ public class GameViewer {
 	private static final String NOTHING = "낫싱";
 	private static final String BALL_COUNT = "%d볼";
 	private static final String STRIKE_COUNT = "%d스트라이크";
-	private static final String GAME_OVER = "3개의 숫자를 모두 맞히셨습니다! 게임 종료";
+	private static final String GAME_OVER = "3개의 숫자를 모두 맞히셨습니다! 게임 끝";
 	private static final String LINE_END = "\n";
 	private static final String SPACE = " ";
 
@@ -21,13 +23,16 @@ public class GameViewer {
 		return userInput;
 	}
 
-	public static void printWrongInputNotice() {
-		System.out.println(WRONG_INPUT_NOTICE);
+	public static void printWrongInputNotice(String message) {
+		System.out.println(message);
 	}
 
-	public static void printRestartNotice() {
+	public static String printRestartNotice() {
 		System.out.println(RESTART_NOTICE);
+		String userInput = Console.readLine();
+		return userInput;
 	}
+
 	public static void printGameOver() {
 		System.out.println(GAME_OVER);
 	}
@@ -47,14 +52,17 @@ public class GameViewer {
 			System.out.format(SPACE);
 		}
 	}
+
 	private static void printBallCount(int ballCount) {
 		if (ballCount > 0) {
 			System.out.format(BALL_COUNT, ballCount);
 		}
 	}
+
 	private static void printNothing(int strikeCount, int ballCount) {
 		if (strikeCount == 0 && ballCount == 0) {
 			System.out.format(NOTHING);
+			throw new NoSuchElementException(NOTHING);
 		}
 	}
 

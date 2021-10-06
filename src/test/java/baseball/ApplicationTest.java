@@ -19,8 +19,7 @@ public class ApplicationTest extends NSTest {
     @Test
     void 낫싱() {
         try (final MockedStatic<Randoms> mockRandoms = mockStatic(Randoms.class)) {
-            mockRandoms
-                    .when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
+            mockRandoms.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
                     .thenReturn(1, 3, 5);
             running("246");
             verify("낫싱");

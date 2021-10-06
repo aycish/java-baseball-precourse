@@ -1,83 +1,86 @@
 package baseball.model;
 
-import java.util.ArrayList;
+import baseball.dto.GameData;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class UserInputValidator {
 
-	private static ArrayList<Integer> numberList = new ArrayList<>();
-	private static int restartFlag;
+	private static final int START_NUMBER = 1;
+	private static final int END_NUMBER = 9;
+	private static final int FINISH_FLAG = 2;
 	private static final String REGULAR_NUMBER_EXPRESSION = "[1-9]+";
 	private static final String REGULAR_RESTART_EXPRESSION = "[1-2]+";
 	private static final int NUMBER_LENGTH = 3;
 	private static final int RESTART_INPUT_LENGTH = 1;
 
-	public static ArrayList<Integer> getUserNumberList() {
-		return numberList;
-	}
-
-	public static int getRestartFlag() {
-		return restartFlag;
-	}
-
-	public static boolean saveUserNumberList(String userInput) {
-		numberList.clear();
-		if (!validateUserNumber(userInput)) {
-			return false;
-		}
-		addUserNumberToList(userInput);
-		return true;
-	}
-
-	public static boolean saveRestartFlagFromUser(String userInput) {
-		if (!validateRestartInput(userInput)) {
-			return false;
-		}
-		restartFlag = Integer.parseInt(userInput);
-		return true;
-	}
-
-	private static void addUserNumberToList(String userInput) {
-		for (char c : userInput.toCharArray()) {
-			numberList.add(Integer.parseInt(String.valueOf(c)));
+	public static void createRestartFlag(GameData gameData) {
+		String userInput = gameData.getUserInput();
+		try {
+			checkRestartLength(userInput);
+			checkRestartHasOtherCharacter(userInput);
+			makeRestartToInt(gameData);
+		} catch(IllegalArgumentException e) {
+			gameData.setMessage(e.getMessage());
+			throw e;
 		}
 	}
 
-	private static boolean validateUserNumber(String userInput) {
-		return checkNumberIsNull(userInput) && checkNumberHasOtherCharacter(userInput)
-				&& checkNumberLength(userInput) && checkNumberDuplicated(userInput);
+	private static void makeRestartToInt(GameData gameData) {
+		gameData.setRestartFlag(Integer.parseInt(gameData.getUserInput()));
 	}
 
-	private static boolean validateRestartInput(String userInput) {
-		return checkRestartLength(userInput) && checkRestartHasOtherCharacter(userInput);
+	public static void createUserNumberList(GameData gameData) {
+		String userInput = gameData.getUserInput();
+		try {
+			checkNumberDuplicated(userInput);
+			checkNumberHasOtherCharacter(userInput);
+			checkNumberLength(userInput);
+			makeUserNumberToList(gameData);
+		} catch(IllegalArgumentException e) {
+			gameData.setMessage(e.getMessage());
+		}
 	}
 
-	private static boolean checkNumberIsNull(String userInput) {
-		return userInput != null;
+	private static void makeUserNumberToList(GameData gameData) {
+		gameData.getUserNumberList().clear();
+		for (char c : gameData.getUserInput().toCharArray()) {
+			gameData.getUserNumberList().add(Integer.parseInt(String.valueOf(c)));
+		}
 	}
 
-	private static boolean checkNumberDuplicated(String userInput) {
+	private static void checkNumberDuplicated(String userInput) {
 		Set<Character> numbers = new HashSet<>();
 		for (char c : userInput.toCharArray()) {
 			numbers.add(c);
 		}
-		return numbers.size() == NUMBER_LENGTH;
+		if (numbers.size() != NUMBER_LENGTH) {
+			throw new IllegalArgumentException("[ERROR] 중복되지 않은 숫자만 입력할 수 있습니다.");
+		}
 	}
 
-	private static boolean checkNumberHasOtherCharacter(String userInput) {
-		return userInput.matches(REGULAR_NUMBER_EXPRESSION);
+	private static void checkNumberHasOtherCharacter(String userInput) {
+		if (!userInput.matches(REGULAR_NUMBER_EXPRESSION)) {
+			throw new IllegalArgumentException(String.format("[ERROR] %d~%d까지의 숫자만 입력할 수 있습니다.",START_NUMBER, END_NUMBER));
+		}
 	}
 
-	private static boolean checkNumberLength(String userInput) {
-		return userInput.length() == NUMBER_LENGTH;
+	private static void checkNumberLength(String userInput) {
+		if (userInput.length() != NUMBER_LENGTH) {
+			throw new IllegalArgumentException(String.format("[ERROR] %d자리의 숫자만 입력할 수 있습니다.",NUMBER_LENGTH));
+		}
 	}
 
-	private static boolean checkRestartHasOtherCharacter(String userInput) {
-		return userInput.matches(REGULAR_RESTART_EXPRESSION);
+	private static void checkRestartHasOtherCharacter(String userInput) {
+		if (!userInput.matches(REGULAR_RESTART_EXPRESSION)) {
+			throw new IllegalArgumentException(String.format("[ERROR] %d~%d까지의 숫자만 입력할 수 있습니다.",START_NUMBER, FINISH_FLAG));
+		}
 	}
 
-	private static boolean checkRestartLength(String userInput) {
-		return userInput.length() == RESTART_INPUT_LENGTH;
+	private static void checkRestartLength(String userInput) {
+		if (userInput.length() != RESTART_INPUT_LENGTH) {
+			throw new IllegalArgumentException(String.format("[ERROR] %d자리의 숫자만 입력할 수 있습니다.",RESTART_INPUT_LENGTH));
+		}
 	}
 }

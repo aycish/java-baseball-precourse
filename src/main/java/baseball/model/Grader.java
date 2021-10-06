@@ -1,31 +1,23 @@
 package baseball.model;
 
+import baseball.dto.GameData;
+
 import java.util.ArrayList;
 
 public class Grader {
-
-	public static int ballCount;
-	public static int strikeCount;
-	private static final int ANSWER = 3;
 	private static final int INITIAL_VALUE = 0;
 
-	public static void gradeUserInput(ArrayList<Integer> computerNumberList, ArrayList<Integer> userNumberList) {
-		ballCount = INITIAL_VALUE;
-		strikeCount = INITIAL_VALUE;
+	public static void gradeUserInput(GameData gameData) {
+		int ballCount = INITIAL_VALUE;
+		int strikeCount = INITIAL_VALUE;
 
-		for (int index = 0 ; index < userNumberList.size(); index++) {
-			ballCount += countBall(computerNumberList,userNumberList.get(index));
-			strikeCount += countStrike(computerNumberList, userNumberList.get(index), index);
+		for (int index = 0 ; index < gameData.getUserNumberList().size(); index++) {
+			ballCount += countBall(gameData.getComputerNumberList(),gameData.getUserNumberList().get(index));
+			strikeCount += countStrike(gameData.getComputerNumberList(), gameData.getUserNumberList().get(index), index);
 		}
-
 		ballCount = ballCount - strikeCount;
-	}
-
-	public static boolean checkFullMark() {
-		if (strikeCount == ANSWER) {
-			return true;
-		}
-		return false;
+		gameData.setBallCount(ballCount);
+		gameData.setStrikeCount(strikeCount);
 	}
 
 	private static int countBall (ArrayList<Integer> computerNumberList, int userNumber) {
@@ -40,13 +32,5 @@ public class Grader {
 			return 1;
 		}
 		return 0;
-	}
-
-	public static int getBallCount() {
-		return ballCount;
-	}
-
-	public static int getStrikeCount() {
-		return strikeCount;
 	}
 }
