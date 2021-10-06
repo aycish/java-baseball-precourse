@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import baseball.model.NumberGenerator;
+
 class NumberGeneratorTest {
 
 	@Test

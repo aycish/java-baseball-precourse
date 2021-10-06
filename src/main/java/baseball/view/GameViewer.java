@@ -1,5 +1,7 @@
 package baseball;
 
+import nextstep.utils.Console;
+
 public class GameViewer {
 	private static final String INPUT_NOTICE = "숫자를 입력해주세요 : ";
 	private static final String WRONG_INPUT_NOTICE = "[ERROR] 잘못된 입력입니다. 다시 입력해주세요.";
@@ -13,8 +15,10 @@ public class GameViewer {
 
 	public GameViewer() {}
 
-	public static void printInputNotice() {
+	public static String printInputNotice() {
 		System.out.format(INPUT_NOTICE);
+		String userInput = Console.readLine();
+		return userInput;
 	}
 
 	public static void printWrongInputNotice() {

@@ -1,31 +1,25 @@
-package baseball;
+package baseball.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import nextstep.utils.Console;
-
-public class UserInput {
+public class UserInputValidator {
 
 	private static ArrayList<Integer> numberList = new ArrayList<>();
-	private static final String REG_EXPRESSION = "[1-9]+";
+	private static final String REGULAR_NUMBER_EXPRESSION = "[1-9]+";
 	private static final int NUMBER_LENGTH = 3;
 
 	public static ArrayList<Integer> getUserNumberList() {
 		return numberList;
 	}
 
-	public static boolean getUserInput() {
-		String userInput = Console.readLine();
+	public static boolean saveUserNumberList(String userInput) {
 		numberList.clear();
-
-		if (checkUserInputValidation(userInput) == false) {
+		if (!checkUserInputValidation(userInput)) {
 			return false;
 		}
-
 		addUserInputToList(userInput);
-
 		return true;
 	}
 
@@ -36,15 +30,15 @@ public class UserInput {
 	}
 
 	private static boolean checkUserInputValidation(String userInput) {
-		return checkUserInputIsNull(userInput) && checkOtherCharacter(userInput)
-			&& checkInputLength(userInput) && checkDuplicatedNumber(userInput);
+		return checkNumberIsNull(userInput) && checkNumberHasOtherCharacter(userInput)
+				&& checkNumberLength(userInput) && checkNumberDuplicated(userInput);
 	}
 
-	private static boolean checkUserInputIsNull(String userInput) {
+	private static boolean checkNumberIsNull(String userInput) {
 		return userInput != null;
 	}
 
-	private static boolean checkDuplicatedNumber(String userInput) {
+	private static boolean checkNumberDuplicated(String userInput) {
 		Set<Character> numbers = new HashSet<>();
 		for (char c : userInput.toCharArray()) {
 			numbers.add(c);
@@ -53,11 +47,11 @@ public class UserInput {
 		return numbers.size() == NUMBER_LENGTH;
 	}
 
-	private static boolean checkOtherCharacter(String userInput) {
-		return userInput.matches(REG_EXPRESSION);
+	private static boolean checkNumberHasOtherCharacter(String userInput) {
+		return userInput.matches(REGULAR_NUMBER_EXPRESSION);
 	}
 
-	private static boolean checkInputLength(String userInput) {
+	private static boolean checkNumberLength(String userInput) {
 		return userInput.length() == NUMBER_LENGTH;
 	}
 
